@@ -1,7 +1,111 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
+<div class="container page-index">
+  <!-- <h1>{{title}}</h1>
+  <p>Welcome to {{title}}</p>
+  <p>hello</p> -->
 
+  <h3>Task List</h3>
 
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        123
+      </div>
+      <div class="col">
+        <div
+          style=""
+          class="_task-add-wra"
+        >
+          <form class="_task-add-form">
+            <div class="form-group">
+              <label for="exampleFormControlInput1">标题</label>
+              <input
+                type="email"
+                name="title"
+                class="form-control"
+                id="exampleFormControlInput1"
+                placeholder="name@example.com"
+              >
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlSelect1">紧急程度</label>
+              <select
+                class="form-control"
+                id="exampleFormControlSelect1"
+                name="urgency"
+              >
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlTextarea1">内容</label>
+              <textarea
+                class="form-control"
+                name="content"
+                id="exampleFormControlTextarea1"
+                rows="3"
+              ></textarea>
+            </div>
+          </form>
+        </div>
+
+        <p>
+          <button
+            type="button"
+            class="btn btn-primary btn-sm js-submit-add"
+          >添加</button>
+        </p>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div
+    class="toast"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+  >
+    <div class="toast-header">
+      <strong class="mr-auto">Bootstrap</strong>
+      <small>11 mins ago</small>
+      <button
+        type="button"
+        class="ml-2 mb-1 close"
+        data-dismiss="toast"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="toast-body">
+      Hello, world! This is a toast message.
+    </div>
+  </div>
+</div>
+
+<script>
+  $(function () {
+    // $('.toast').toast()
+    $('.js-submit-add').click(function () {
+      $.post({
+        url: '/task_add',
+        params: {
+          title: '',
+          urgency: '',
+          content: '',
+        },
+        success(res) {
+          console.log(res, 'task_add');
+        }
+      })
+    })
+  })
+</script>
 <!-- All you have to do is include the reload script and have it be on every page of your project -->
 <!-- You do not create this route, reload creates it for you automatically -->
 <script src="/reload/reload.js"></script>
