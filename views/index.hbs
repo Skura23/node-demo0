@@ -7,8 +7,27 @@
 
   <div class="container">
     <div class="row">
-      <div class="col">
-        123
+      <div
+        class="col"
+        style="padding-left: 0;"
+      >
+        <div class="list-group" v-cloak>
+          <a
+            href="#"
+            class="list-group-item list-group-item-action "
+            v-for="item in taskList"
+          >
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">\{{item.title}}</h5>
+              <small>3 days ago</small>
+            </div>
+            <p class="mb-1">
+              \{{item.content}}
+            </p>
+            <!-- <small>Donec id elit non mi porta.</small> -->
+          </a>
+        </div>
+        <!-- <div v-for="tt in test">\{{tt}}</div> -->
       </div>
       <div class="col">
         <div
@@ -19,11 +38,11 @@
             <div class="form-group">
               <label for="exampleFormControlInput1">标题</label>
               <input
-                type="email"
+                type="text"
                 name="title"
                 class="form-control"
                 id="exampleFormControlInput1"
-                placeholder="name@example.com"
+                placeholder="请输入标题"
               >
             </div>
             <div class="form-group">
@@ -49,15 +68,16 @@
                 rows="3"
               ></textarea>
             </div>
+            <p>
+              <input
+                type="submit"
+                value="添加"
+                class="btn btn-primary btn-sm js-submit-add"
+              ></input>
+            </p>
           </form>
         </div>
 
-        <p>
-          <button
-            type="button"
-            class="btn btn-primary btn-sm js-submit-add"
-          >添加</button>
-        </p>
 
       </div>
 
@@ -90,20 +110,65 @@
 
 <script>
   $(function () {
-    // $('.toast').toast()
-    $('.js-submit-add').click(function () {
-      $.post({
-        url: '/task_add',
-        params: {
-          title: '',
-          urgency: '',
-          content: '',
-        },
-        success(res) {
-          console.log(res, 'task_add');
+    let vueApp = new Vue({
+      el: '.page-index',
+      data() {
+        return {
+          taskList: [],
+          test: [1, 2, 3, 4],
+          test1: 123
         }
-      })
+      },
+      methods: {
+        ajaxGetList() {
+          let _this = this
+          $.get({
+            url: '/task_list',
+            success(res) {
+              _this.taskList = res.data
+              console.log(_this.taskList, 'task_list');
+            }
+          })
+        },
+      },
+      created() {
+        console.log('created');
+      },
+      
+      mounted() {
+        let _this = this
+        this.ajaxGetList()
+        // $('.toast').toast()
+        let $taskAddForm = $('.page-index ._task-add-wra ._task-add-form')
+        $taskAddForm.on('submit', function (e) {
+          e.preventDefault(); // prevent native submit
+          let _$this2 = $(this)
+          $(this).ajaxSubmit({
+            type: 'post',
+            url: '/task_add',
+            success(res) {
+              console.log(res, 'task_add');
+              _$this2.clearForm()
+              _this.ajaxGetList()
+            }
+          })
+        });
+      },
     })
+
+
+
+    // $.post({
+    //   url: '/task_add',
+    //   params: {
+    //     title: '',
+    //     urgency: '',
+    //     content: '',
+    //   },
+    //   success(res) {
+    //     console.log(res, 'task_add');
+    //   }
+    // })
   })
 </script>
 <!-- All you have to do is include the reload script and have it be on every page of your project -->
