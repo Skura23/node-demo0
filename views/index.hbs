@@ -1,40 +1,122 @@
-<div class="container page-index">
+<div class="page-index">
   <!-- <h1>{{title}}</h1>
   <p>Welcome to {{title}}</p>
   <p>hello</p> -->
 
   <h3>Task List</h3>
 
-  <div class="container">
-    <div class="row">
-      <div
-        class="col"
+  <div
+    class=""
+    v-cloak
+  >
+    <el-row :gutter="20">
+      <el-col
         style="padding-left: 0;"
+        :span="12"
       >
-        <div class="list-group" v-cloak>
-          <a
+        <el-card
+          :class="[i!=0 && 'mt', 'box-card']"
+          v-for="(item,i) in taskList"
+        >
+          <div
+            slot="header"
+            class="clearfix"
+          >
+            <span>\{{item.title}}</span>
+            <div style="float: right; padding: 3px 0">
+              <div>
+                <small :title="'更新于 '+item.updated_at">\{{item.created_at}}</small>
+                <span
+                  class="el-icon-edit cp"
+                  @click="editTask(item.id)"
+                ></span>
+                <el-checkbox
+                  :value="item.checked==0 ? false : true"
+                  :disabled="item._changeCheckDised"
+                  @change="changeCheck(item.id)"
+                ></el-checkbox>
+                <span
+                  class="el-icon-close cp"
+                  @click="delTask(item.id)"
+                ></span>
+              </div>
+            </div>
+          </div>
+          <div>
+            \{{item.content}}
+          </div>
+        </el-card>
+        <!-- <div class="list-group">
+          <div
             href="#"
             class="list-group-item list-group-item-action "
             v-for="item in taskList"
           >
             <div class="d-flex w-100 justify-content-between">
               <h5 class="mb-1">\{{item.title}}</h5>
-              <small>3 days ago</small>
+              <div>
+                <small :title="'更新于 '+item.updated_at">\{{item.created_at}}</small>
+                <span
+                  class="el-icon-edit cp"
+                  @click="editTask(item.id)"
+                ></span> 
+                <el-checkbox
+                  :value="item.checked==0 ? false : true"
+                  :disabled="item._changeCheckDised"
+                  @change="changeCheck(item.id)"
+                ></el-checkbox> 
+                <span
+                  class="el-icon-close cp"
+                  @click="delTask(item.id)"
+                ></span>
+              </div>
             </div>
             <p class="mb-1">
               \{{item.content}}
             </p>
-            <!-- <small>Donec id elit non mi porta.</small> -->
-          </a>
-        </div>
-        <!-- <div v-for="tt in test">\{{tt}}</div> -->
-      </div>
-      <div class="col">
-        <div
-          style=""
-          class="_task-add-wra"
+          </div>
+        </div> -->
+      </el-col>
+      <el-col
+        class="_task-add-wra"
+        :span="12"
+      >
+        <el-form
+          ref="form"
+          :model="form"
+          label-width="80px"
         >
-          <form class="_task-add-form">
+          <el-form-item label="标题">
+            <el-input v-model="form.title"></el-input>
+          </el-form-item>
+          <el-form-item label="紧急程度">
+            <el-select
+              v-model="form.urgency"
+              placeholder="请选择紧急程度"
+            >
+              <el-option
+                label="1"
+                value="1"
+              ></el-option>
+              <el-option
+                label="2"
+                value="2"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="内容">
+            <el-input
+              type="textarea"
+              v-model="form.content"
+              :autosize="{minRows: 3, maxRows: 6}"
+            ></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="">添 加</el-button>
+            <!-- <el-button>取消</el-button> -->
+          </el-form-item>
+        </el-form>
+        <!-- <form class="_task-add-form">
             <div class="form-group">
               <label for="exampleFormControlInput1">标题</label>
               <input
@@ -75,13 +157,10 @@
                 class="btn btn-primary btn-sm js-submit-add"
               ></input>
             </p>
-          </form>
-        </div>
+          </form> -->
+      </el-col>
 
-
-      </div>
-
-    </div>
+    </el-row>
   </div>
 
   <div
@@ -114,45 +193,150 @@
       el: '.page-index',
       data() {
         return {
+          f_editting: false,
           taskList: [],
           test: [1, 2, 3, 4],
-          test1: 123
+          test1: 123,
+          edittingId: '',
+          form: {}
+          // _changeCheckDised: false
         }
       },
       methods: {
+        // 为数据集增加本地变量
+        localizeList() {
+          for (const item of this.taskList) {
+            // 增加新属性要用set方法
+            Vue.set(item, '_changeCheckDised', false)
+          }
+        },
+        // 获取当前事件对应的列表项
+        getCurItem(id) {
+          let _item = this.taskList.find((item) => {
+            return item.id == id
+          })
+          return _item
+        },
         ajaxGetList() {
           let _this = this
           $.get({
             url: '/task_list',
             success(res) {
               _this.taskList = res.data
+              _this.localizeList()
               console.log(_this.taskList, 'task_list');
             }
           })
         },
+        editTask(id) {
+          let _this = this;
+          let _item = _this.getCurItem(id)
+
+        },
+        changeCheck(id) {
+          let _this = this;
+          let _item = _this.getCurItem(id)
+          $.ajax({
+            url: '/task_changecheck',
+            data: {
+              id
+            },
+            type: 'post',
+            beforeSend(xhr) {
+              _item._changeCheckDised = true
+              console.log(_this.taskList, 'task_changecheck');
+            },
+            success(res) {
+              console.log(res, 'changeCheck');
+              _item.checked = res.value
+            },
+            complete() {
+              _item._changeCheckDised = false
+            }
+          })
+        },
+        delTask(id) {
+          let _this = this
+
+          this.$confirm('此操作将永久删除该任务, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            console.log(ajaxDel, '删除成功');
+            ajaxDel(() => {
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+            })
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            });
+          });
+
+          function ajaxDel(cb) {
+            let i = _this.taskList.findIndex((item) => {
+              return item.id == id
+            })
+            _this.taskList.splice(i, 1)
+
+            $.ajax({
+              url: '/task_del',
+              data: {
+                id
+              },
+              type: 'POST',
+              beforeSend(xhr) {
+                // _this._changeCheckDised = true
+              },
+              success(res) {
+                console.log(res.msg, 'task_del');
+                // _this.$message(res.msg)
+                cb()
+              },
+              complete() {
+                // _this._changeCheckDised = false
+              }
+            })
+          }
+        }
+        // checkSubVal(){
+
+        // }
+      },
+      addTask() {
+
       },
       created() {
         console.log('created');
+        // this.$message('这是一条消息提示');
       },
-      
+
       mounted() {
         let _this = this
         this.ajaxGetList()
-        // $('.toast').toast()
-        let $taskAddForm = $('.page-index ._task-add-wra ._task-add-form')
-        $taskAddForm.on('submit', function (e) {
-          e.preventDefault(); // prevent native submit
-          let _$this2 = $(this)
-          $(this).ajaxSubmit({
-            type: 'post',
-            url: '/task_add',
-            success(res) {
-              console.log(res, 'task_add');
-              _$this2.clearForm()
-              _this.ajaxGetList()
-            }
-          })
-        });
+
+        // jq版表单提交
+        // let $taskAddForm = $('.page-index ._task-add-wra ._task-add-form')
+        // $taskAddForm.on('submit', function (e) {
+        //   e.preventDefault(); // prevent native submit
+        //   let _$this2 = $(this)
+        //   $(this).ajaxSubmit({
+        //     type: 'post',
+        //     url: '/task_add',
+        //     success(res) {
+        //       console.log(res, 'task_add');
+        //       if (res.code == -1) {
+        //         return _this.$message(res.msg)
+        //       }
+        //       _$this2.clearForm()
+        //       _this.ajaxGetList()
+        //     }
+        //   })
+        // });
       },
     })
 

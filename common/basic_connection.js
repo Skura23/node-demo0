@@ -4,7 +4,8 @@ const connection = require('knex')({
     host : '127.0.0.1',
     user : 'root',
     password : 'root',
-    database : 'node-task'
+    database : 'node-task',
+    port: 3308,
   }
 });
 

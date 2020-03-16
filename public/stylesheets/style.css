@@ -7,6 +7,200 @@ a {
   color: #00B7FF;
 }
 
-[v-cloak]{
+[v-cloak] {
   display: none;
 }
+
+/* helpers */
+/* useful css class */
+.tc {
+  text-align: center;
+}
+
+.bb {
+  border-bottom: 1px solid #ececec;
+}
+
+
+.re {
+  position: relative;
+}
+
+.ab {
+  position: absolute;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.ov {
+  overflow: hidden;
+}
+
+.w100 {
+  width: 100vw;
+}
+
+.hide {
+  display: none;
+}
+
+.auto0 {
+  margin: 0 auto;
+}
+
+.mb {
+  margin-bottom: 20px;
+}
+
+.mt {
+  margin-top: 20px;
+}
+
+.mt30 {
+  margin-top: 30px;
+}
+
+.mt1 {
+  margin-top: 10px;
+}
+
+.block {
+  display: block;
+}
+
+.v-h-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+  -webkit-transform: translateY(-50%) translateX(-50%);
+  -ms-transform: translateY(-50%) translateX(-50%);
+  transform: translateY(-50%) translateX(-50%);
+}
+
+.h-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+.v-center {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+/* 内容竖直居中(比如文字等) */
+.cont-v-c {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+/* 文本溢出显示省略号 */
+.ellipsis {
+  max-width: 40vw;
+  /* // line-height: 25px; */
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.i-b {
+  display: inline-block;
+}
+.cp{
+  cursor: pointer;
+}
+.bold {
+  font-weight: bold;
+}
+
+.font18 {
+  font-size: 4.8vw;
+}
+
+.font16 {
+  font-size: 4.3vw;
+}
+
+.font14 {
+  font-size: 3.7vw;
+}
+
+.font12 {
+  font-size: 3.2vw;
+}
+
+.font10 {
+  font-size: 2.7vw;
+}
+
+.fl {
+  float: left
+}
+
+.fr {
+  float: right
+}
+
+.clearfix:after {
+  display: block;
+  clear: both;
+  content: "";
+  visibility: hidden;
+  height: 0;
+}
+
+.clearfix {
+  zoom: 1;
+}
+
+/* // 灰色半透明遮罩 */
+.gray-mask {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  opacity: 0.6;
+  background: #000;
+  z-index: 199;
+  top: 0;
+  left: 0;
+}
+
+.bor-table {
+  border-collapse: collapse;
+}
+
+.bor-table td,
+.bor-table th {
+  border: 1px solid gray;
+}
+
+.table-v-h-center {
+  text-align: center;
+}
+
+.table-v-h-center td,
+.table-v-h-center th {
+  vertical-align: middle;
+}
+
+/* helpers end */
+
+/* #region app css */
+.page-index{
+  width: 1140px;
+  margin: 0 auto;
+}
+
+
+/* #endregion app css */

@@ -8,8 +8,12 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var task_list_router = require('./routes/task_list');
+var task_del_router = require('./routes/task_del');
+var task_changecheck_router = require('./routes/task_changecheck');
+var task_edit_router = require('./routes/task_edit');
 var task_add_router = require('./routes/task_add').router;
 var task_add_name = require('./routes/task_add').name;
+console.log(task_del_router.routerName, 'task_del_router');
 // console.log(task_add_name, 'task_add_name');
 // console.log(usersRouter, 'usersRouter');
 
@@ -29,6 +33,10 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/task_add', task_add_router);
 app.use('/task_list', task_list_router);
+app.use('/task_del', task_del_router);
+app.use('/task_changecheck', task_changecheck_router);
+app.use('/task_edit', task_edit_router);
+
 reload(app)
 
 // catch 404 and forward to error handler

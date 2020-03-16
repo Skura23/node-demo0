@@ -15,6 +15,8 @@ router.get('/', function(req, res, next) {
         table.string('title')
         table.string('urgency')
         table.string('content')
+        table.timestamps(true, true);
+        table.boolean('checked')
       });
     }
   });
